@@ -1,0 +1,799 @@
+1. Create the database named "SISDB
+	create database SISDB;
+	use SISDB;
+2.Define the schema for the Students, Courses, Enrollments, Teacher, and Payments tables based 
+on the provided schema. Write SQL scripts to create the mentioned tables with appropriate data 
+types, constraints, and relationships. 
+a. Students 
+b. Courses
+c. Enrollments 
+d. Teacher 
+e. Payments
+
+	create table students(student_ID int primary key,first_name varchar(20),last_name varchar(20),DOB date,email varchar(20),phone decimal(10,0));
+	create table courses(courseID int primary key,course_name varchar(20),credits varchar(20),TeacherID int);
+	CREATE TABLE enrollments ( enrollment_ID INT PRIMARY KEY,student_ID INT,CourseID INT,enrollment_date DATE,FOREIGN KEY (student_ID) REFERENCES students(student_ID),FOREIGN KEY (CourseID) REFERENCES courses(CourseID) );
+	create table teacher(teacher_id int primary key,first_name varchar(20),last_name varchar(20), email varchar(20));
+	alter table courses change teacherID teacher_ID int;
+	alter table courses add constraint foreign key(teacher_ID) references teacher(teacher_ID);
+	create table payments(payment_ID int primary key,student_ID int,amount decimal(10,2),payment_date date,foreign key(student_ID) references students(student_ID));
+
+3. Create an ERD (Entity Relationship Diagram) for the database
+
+
+
+4. Create appropriate Primary Key and Foreign Key constraints for referential integrity.
+ desc students;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| student_ID | int           | NO   | PRI | NULL    |       |
+| first_name | varchar(20)   | YES  |     | NULL    |       |
+| last_name  | varchar(20)   | YES  |     | NULL    |       |
+| DOB        | date          | YES  |     | NULL    |       |
+| email      | varchar(20)   | YES  |     | NULL    |       |
+| phone      | decimal(10,0) | YES  |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+6 rows in set (0.17 sec)
+
+mysql> desc courses;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| courseID    | int         | NO   | PRI | NULL    |       |
+| course_name | varchar(20) | YES  |     | NULL    |       |
+| credits     | varchar(20) | YES  |     | NULL    |       |
+| teacher_ID  | int         | YES  | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc enrollments;
++-----------------+------+------+-----+---------+-------+
+| Field           | Type | Null | Key | Default | Extra |
++-----------------+------+------+-----+---------+-------+
+| enrollment_ID   | int  | NO   | PRI | NULL    |       |
+| student_ID      | int  | YES  | MUL | NULL    |       |
+| CourseID        | int  | YES  | MUL | NULL    |       |
+| enrollment_date | date | YES  |     | NULL    |       |
++-----------------+------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc teacher;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| teacher_id | int         | NO   | PRI | NULL    |       |
+| first_name | varchar(20) | YES  |     | NULL    |       |
+| last_name  | varchar(20) | YES  |     | NULL    |       |
+| email      | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc payments;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| payment_ID   | int           | NO   | PRI | NULL    |       |
+| student_ID   | int           | YES  | MUL | NULL    |       |
+| amount       | decimal(10,2) | YES  |     | NULL    |       |
+| payment_date | date          | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+5.  Insert at least 10 sample records into each of the following tables.
+i. Students
+ii. Courses
+iii. Enrollments
+iv. Teacher
+v. Payments
+
+mysql> INSERT INTO Students (student_id, first_name, last_name, DOB, email, phone) VALUES
+    -> (101, 'John', 'Doe', '2000-01-01', 'john.doe@gmail.com', '1234567890'),
+    -> (102, 'Jane', 'Smith', '2001-02-01', 'jane.smith@gmail.com', '1234567891'),
+    -> (103, 'Alice', 'Johnson', '2002-03-01', 'alice.johnson@gmail.com', '1234567892'),
+    -> (104, 'Bob', 'Brown', '2000-04-01', 'bob.brown@gmail.com', '1234567893'),
+    -> (105, 'Mary', 'Davis', '2001-05-01', 'mary.davis@gmail.com', '1234567894'),
+    -> (106, 'Michael', 'Miller', '2002-06-01', 'michael.miller@gmail.com', '1234567895'),
+    -> (107, 'Elizabeth', 'Wilson', '2000-07-01', 'elizabeth.wilson@gmail.com', '1234567896'),
+    -> (108, 'David', 'Moore', '2001-08-01', 'david.moore@gmail.com', '1234567897'),
+    -> (109, 'Emma', 'Taylor', '2002-09-01', 'emma.taylor@gmail.com', '1234567898'),
+    -> (110, 'James', 'Anderson', '2000-10-01', 'james.anderson@gmail.com', '1234567899');
+Query OK, 10 rows affected (0.13 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+
+ INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES
+    -> (401, 'Sarah', 'Conner', 'sarah.conner@gmail.com'),
+    -> (402, 'Bruce', 'Wayne', 'bruce.wayne@gmail.com'),
+    -> (403, 'Diana', 'Prince', 'diana.prince@gmail.com'),
+    -> (404, 'Clark', 'Kent', 'clark.kent@gmail.com'),
+    -> (405, 'Peter', 'Parker', 'peter.parker@gmail.com'),
+    -> (406, 'Steve', 'Rogers', 'steve.rogers@gmail.com'),
+    -> (407, 'Tony', 'Stark', 'tony.stark@gmail.com'),
+    -> (408, 'Natasha', 'Romanoff', 'natasha.romanoff@gmail.com'),
+    -> (409, 'Nick', 'Fury', 'nick.fury@gmail.com'),
+    -> (410, 'Thor', 'Odinson', 'thor.odinson@gmail.com');
+ERROR 1406 (22001): Data too long for column 'email' at row 1
+mysql> alter table teacher modify email varchar(100);
+Query OK, 0 rows affected (0.77 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES
+    -> (401, 'Sarah', 'Conner', 'sarah.conner@gmail.com'),
+    -> (402, 'Bruce', 'Wayne', 'bruce.wayne@gmail.com'),
+    -> (403, 'Diana', 'Prince', 'diana.prince@gmail.com'),
+    -> (404, 'Clark', 'Kent', 'clark.kent@gmail.com'),
+    -> (405, 'Peter', 'Parker', 'peter.parker@gmail.com'),
+    -> (406, 'Steve', 'Rogers', 'steve.rogers@gmail.com'),
+    -> (407, 'Tony', 'Stark', 'tony.stark@gmail.com'),
+    -> (408, 'Natasha', 'Romanoff', 'natasha.romanoff@gmail.com'),
+    -> (409, 'Nick', 'Fury', 'nick.fury@gmail.com'),
+    -> (410, 'Thor', 'Odinson', 'thor.odinson@gmail.com');
+Query OK, 10 rows affected (0.41 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+INSERT INTO Courses (courseID, course_name, credits, teacher_id) VALUES
+    -> (201, 'Mathematics', 3, 401),
+    -> (202, 'English Literature', 4, 402),
+    -> (203, 'Physics', 4, 403),
+    -> (204, 'Chemistry', 3, 404),
+    -> (205, 'Biology', 4, 405),
+    -> (206, 'History', 3, 401),
+    -> (207, 'Art', 2, 402),
+    -> (208, 'Computer Science', 5, 403),
+    -> (209, 'Economics', 4, 404),
+    -> (210, 'Psychology', 3, 405);
+Query OK, 10 rows affected (0.06 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+ INSERT INTO Enrollments (enrollment_id, student_id, courseID, enrollment_date) VALUES
+    -> (301, 101, 201, '2023-01-20'),
+    -> (302, 102, 202, '2023-01-21'),
+    -> (303, 103, 203, '2023-01-22'),
+    -> (304, 104, 204, '2023-01-23'),
+    -> (305, 105, 205, '2023-01-24'),
+    -> (306, 106, 206, '2023-01-25'),
+    -> (307, 107, 207, '2023-01-26'),
+    -> (308, 108, 208, '2023-01-27'),
+    -> (309, 109, 209, '2023-01-28'),
+    -> (310, 110, 210, '2023-01-29');
+Query OK, 10 rows affected (0.16 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+INSERT INTO Payments (payment_id, student_id, amount, payment_date) VALUES
+    -> (501, 101, 1000, '2023-02-01'),
+    -> (502, 102, 1000, '2023-02-02'),
+    -> (503, 103, 1000, '2023-02-03'),
+    -> (504, 104, 1000, '2023-02-04'),
+    -> (505, 105, 1000, '2023-02-05'),
+    -> (506, 106, 1000, '2023-02-06'),
+    -> (507, 107, 1000, '2023-02-07'),
+    -> (508, 108, 1000, '2023-02-08'),
+    -> (509, 109, 1000, '2023-02-09'),
+    -> (510, 110, 1000, '2023-02-10');
+Query OK, 10 rows affected (0.17 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+select * from students;
++------------+------------+-----------+------------+------------------------------+------------+
+| student_ID | first_name | last_name | DOB        | email                        | phone      |
++------------+------------+-----------+------------+------------------------------+------------+
+|        101 | John       | Doe       | 2000-01-01 | john.doe@gmail.com         | 1234567890 |
+|        102 | Jane       | Smith     | 2001-02-01 | jane.smith@gmail.com       | 1234567891 |
+|        103 | Alice      | Johnson   | 2002-03-01 | alice.johnson@gmail.com    | 1234567892 |
+|        104 | Bob        | Brown     | 2000-04-01 | bob.brown@gmail.com        | 1234567893 |
+|        105 | Mary       | Davis     | 2001-05-01 | mary.davis@gmail.com       | 1234567894 |
+|        106 | Michael    | Miller    | 2002-06-01 | michael.miller@gmail.com   | 1234567895 |
+|        107 | Elizabeth  | Wilson    | 2000-07-01 | elizabeth.wilson@gmail.com | 1234567896 |
+|        108 | David      | Moore     | 2001-08-01 | david.moore@gmail.com      | 1234567897 |
+|        109 | Emma       | Taylor    | 2002-09-01 | emma.taylor@gmail.com      | 1234567898 |
+|        110 | James      | Anderson  | 2000-10-01 | james.anderson@gmail.com   | 1234567899 |
++------------+------------+-----------+------------+------------------------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from courses;
++----------+--------------------+---------+------------+
+| courseID | course_name        | credits | teacher_ID |
++----------+--------------------+---------+------------+
+|      201 | Mathematics        | 3       |        401 |
+|      202 | English Literature | 4       |        402 |
+|      203 | Physics            | 4       |        403 |
+|      204 | Chemistry          | 3       |        404 |
+|      205 | Biology            | 4       |        405 |
+|      206 | History            | 3       |        401 |
+|      207 | Art                | 2       |        402 |
+|      208 | Computer Science   | 5       |        403 |
+|      209 | Economics          | 4       |        404 |
+|      210 | Psychology         | 3       |        405 |
++----------+--------------------+---------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from enrollments;
++---------------+------------+----------+-----------------+
+| enrollment_ID | student_ID | CourseID | enrollment_date |
++---------------+------------+----------+-----------------+
+|           301 |        101 |      201 | 2023-01-20      |
+|           302 |        102 |      202 | 2023-01-21      |
+|           303 |        103 |      203 | 2023-01-22      |
+|           304 |        104 |      204 | 2023-01-23      |
+|           305 |        105 |      205 | 2023-01-24      |
+|           306 |        106 |      206 | 2023-01-25      |
+|           307 |        107 |      207 | 2023-01-26      |
+|           308 |        108 |      208 | 2023-01-27      |
+|           309 |        109 |      209 | 2023-01-28      |
+|           310 |        110 |      210 | 2023-01-29      |
++---------------+------------+----------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from teacher;
++------------+------------+-----------+------------------------------+
+| teacher_id | first_name | last_name | email                        |
++------------+------------+-----------+------------------------------+
+|        401 | Sarah      | Conner    | sarah.conner@gmail.com     |
+|        402 | Bruce      | Wayne     | bruce.wayne@gmail.com      |
+|        403 | Diana      | Prince    | diana.prince@gmail.com     |
+|        404 | Clark      | Kent      | clark.kent@gmail.com       |
+|        405 | Peter      | Parker    | peter.parker@gmail.com     |
+|        406 | Steve      | Rogers    | steve.rogers@gmail.com     |
+|        407 | Tony       | Stark     | tony.stark@gmail.com       |
+|        408 | Natasha    | Romanoff  | natasha.romanoff@gmail.com |
+|        409 | Nick       | Fury      | nick.fury@gmail.com        |
+|        410 | Thor       | Odinson   | thor.odinson@gmail.com     |
++------------+------------+-----------+------------------------------+
+10 rows in set (0.00 sec)
+
+
+select * from payments
+    -> ;
++------------+------------+---------+--------------+
+| payment_ID | student_ID | amount  | payment_date |
++------------+------------+---------+--------------+
+|        502 |        102 | 1200.00 | 2023-02-02   |
+|        503 |        103 | 1100.00 | 2023-02-03   |
+|        504 |        104 | 1000.00 | 2023-02-04   |
+|        505 |        105 | 1150.00 | 2023-02-05   |
+|        506 |        106 | 1000.00 | 2023-02-06   |
+|        507 |        107 | 1300.00 | 2023-02-07   |
+|        508 |        108 |  900.00 | 2023-02-08   |
+|        509 |        109 | 1050.00 | 2023-02-09   |
+|        510 |        110 | 1250.00 | 2023-02-10   |
++------------+------------+---------+--------------+
+9 rows in set (0.00 sec)
+
+
+Task 2:
+1.Write an SQL query to insert a new student into the "Students" table with the following details:
+a. First Name: John
+b. Last Name: Doe
+c. Date of Birth: 1995-08-15
+d. Email: john.doe@gmail.com
+e. Phone Number: 1234567890
+
+insert into students values(111,"John","Doe","1995-08-15","john.doe@gmail.com",1234567890);
+ select * from students;
++------------+------------+-----------+------------+------------------------------+------------+
+| student_ID | first_name | last_name | DOB        | email                        | phone      |
++------------+------------+-----------+------------+------------------------------+------------+
+|        102 | Jane       | Smith     | 2001-02-01 | jane.smith@gmail.com       | 1234567891 |
+|        103 | Alice      | Johnson   | 2002-03-01 | alice.johnson@gmail.com    | 1234567892 |
+|        104 | Bob        | Brown     | 2000-04-01 | bob.brown@gmail.com        | 1234567893 |
+|        105 | Mary       | Davis     | 2001-05-01 | mary.davis@gmail.com       | 1234567894 |
+|        106 | Michael    | Miller    | 2002-06-01 | michael.miller@gmail.com   | 1234567895 |
+|        107 | Elizabeth  | Wilson    | 2000-07-01 | elizabeth.wilson@gmail.com | 1234567896 |
+|        108 | David      | Moore     | 2001-08-01 | david.moore@gmail.com      | 1234567897 |
+|        109 | Emma       | Taylor    | 2002-09-01 | emma.taylor@gmail.com      | 1234567898 |
+|        110 | James      | Anderson  | 2000-10-01 | james.anderson@gmail.com   | 1234567899 |
+|        111 | John       | Doe       | 1995-08-15 | john.doe@gmail.com           | 1234567890 |
++------------+------------+-----------+------------+------------------------------+------------+
+10 rows in set (0.00 sec)
+
+2.Write an SQL query to enroll a student in a course. Choose an existing student and course and 
+insert a record into the "Enrollments" table with the enrollment date.
+
+insert into enrollments values(311,102,202,"2024-04-29");
+mysql> select * from enrollments;
++---------------+------------+----------+-----------------+
+| enrollment_ID | student_ID | CourseID | enrollment_date |
++---------------+------------+----------+-----------------+
+|           302 |        102 |      202 | 2023-01-21      |
+|           303 |        103 |      203 | 2023-01-22      |
+|           304 |        104 |      204 | 2023-01-23      |
+|           305 |        105 |      205 | 2023-01-24      |
+|           307 |        107 |      207 | 2023-01-26      |
+|           308 |        108 |      208 | 2023-01-27      |
+|           309 |        109 |      209 | 2023-01-28      |
+|           310 |        110 |      210 | 2023-01-29      |
+|           311 |        102 |      202 | 2024-04-29      |
++---------------+------------+----------+-----------------+
+9 rows in set (0.00 sec)
+
+3. Update the email address of a specific teacher in the "Teacher" table. Choose any teacher and
+modify their email address
+
+mysql> update teacher set email = "sarah.conner23@gmail.com" where teacher_id = '401';
+mysql> select * from teacher;
++------------+------------+-----------+--------------------------+
+| teacher_id | first_name | last_name | email                    |
++------------+------------+-----------+--------------------------+
+|        401 | Sarah      | Conner    | sarah.conner23@gmail.com |
+|        402 | Bruce      | Wayne     |Bruce23@gmail.com |
+|        403 | Diana      | Prince    | Diana23@gmail.com |
+|        404 | Clark      | Kent      | Clark23@gmail.com |
+|        405 | Peter      | Parker    | Parker@gmail.com |
+|        406 | Steve      | Rogers    | Steve @gmail.com |
+|        407 | Tony       | Stark     | Tony 23@gmail.com |
+|        408 | Natasha    | Romanoff  | Natasha.conner23@gmail.com |
+|        409 | Nick       | Fury      | Nick@gmail.com |
+|        410 | Thor       | Odinson   | Thor @gmail.com |
++------------+------------+-----------+--------------------------+
+
+4. Write an SQL query to delete a specific enrollment record from the "Enrollments" table. Select
+an enrollment record based on the student and course.
+
+delete from enrollments where enrollment_id = 306;
+mysql> select * from enrollments;
++---------------+------------+----------+-----------------+
+| enrollment_ID | student_ID | CourseID | enrollment_date |
++---------------+------------+----------+-----------------+
+|           302 |        102 |      202 | 2023-01-21      |
+|           303 |        103 |      203 | 2023-01-22      |
+|           304 |        104 |      204 | 2023-01-23      |
+|           305 |        105 |      205 | 2023-01-24      |
+|           307 |        107 |      207 | 2023-01-26      |
+|           308 |        108 |      208 | 2023-01-27      |
+|           309 |        109 |      209 | 2023-01-28      |
+|           310 |        110 |      210 | 2023-01-29      |
+|           311 |        102 |      202 | 2024-04-29      |
++---------------+------------+----------+-----------------+
+
+5. Update the "Courses" table to assign a specific teacher to a course. Choose any course and
+teacher from the respective tables.
+
+mysql> update courses set teacher_ID = 405 where courseId = 209;
+mysql> select * from courses;
++----------+--------------------+---------+------------+
+| courseID | course_name        | credits | teacher_ID |
++----------+--------------------+---------+------------+
+|      201 | Mathematics        | 3       |        401 |
+|      202 | English Literature | 4       |        402 |
+|      203 | Physics            | 4       |        403 |
+|      204 | Chemistry          | 3       |        404 |
+|      205 | Biology            | 4       |        405 |
+|      206 | History            | 3       |        401 |
+|      207 | Art                | 2       |        402 |
+|      208 | Computer Science   | 5       |        403 |
+|      209 | Economics          | 4       |        405 |
+|      210 | Psychology         | 3       |        405 |
++----------+--------------------+---------+------------+
+
+6. Delete a specific student from the "Students" table and remove all their enrollment records
+from the "Enrollments" table. Be sure to maintain referential integrity
+
+mysql> delete from enrollments where student_ID = 101;
+mysql> delete from payments where student_ID = 101;
+mysql> delete from students where student_ID = 101;
+
+mysql> select * from students;
++------------+------------+-----------+------------+------------------------------+------------+
+| student_ID | first_name | last_name | DOB        | email                        | phone      |
++------------+------------+-----------+------------+------------------------------+------------+
+|        102 | Jane       | Smith     | 2001-02-01 | jane.smith@gmail.com       | 1234567891 |
+|        103 | Alice      | Johnson   | 2002-03-01 | alice.johnson@gmail.com    | 1234567892 |
+|        104 | Bob        | Brown     | 2000-04-01 | bob.brown@gmail.com        | 1234567893 |
+|        105 | Mary       | Davis     | 2001-05-01 | mary.davis@gmail.com       | 1234567894 |
+|        106 | Michael    | Miller    | 2002-06-01 | michael.miller@gmail.com   | 1234567895 |
+|        107 | Elizabeth  | Wilson    | 2000-07-01 | elizabeth.wilson@gmail.com | 1234567896 |
+|        108 | David      | Moore     | 2001-08-01 | david.moore@gmail.com      | 1234567897 |
+|        109 | Emma       | Taylor    | 2002-09-01 | emma.taylor@gmail.com      | 1234567898 |
+|        110 | James      | Anderson  | 2000-10-01 | james.anderson@gmail.com   | 1234567899 |
+|        111 | John       | Doe       | 1995-08-15 | john.doe@gmail.com           | 1234567890 |
++------------+------------+-----------+------------+------------------------------+------------+
+10 rows in set (0.00 sec)
+
+7. Update the payment amount for a specific payment record in the "Payments" table. Choose any
+payment record and modify the payment amount.
+
+mysql> update payments set amount = 1000 where student_id = 104;
+mysql> select * from payments;
++------------+------------+---------+--------------+
+| payment_ID | student_ID | amount  | payment_date |
++------------+------------+---------+--------------+
+|        502 |        102 | 1200.00 | 2023-02-02   |
+|        503 |        103 | 1100.00 | 2023-02-03   |
+|        504 |        104 | 1000.00 | 2023-02-04   |
+|        505 |        105 | 1150.00 | 2023-02-05   |
+|        506 |        106 | 1000.00 | 2023-02-06   |
+|        507 |        107 | 1300.00 | 2023-02-07   |
+|        508 |        108 |  900.00 | 2023-02-08   |
+|        509 |        109 | 1050.00 | 2023-02-09   |
+|        510 |        110 | 1250.00 | 2023-02-10   |
++------------+------------+---------+--------------+
+
+
+
+Task 3:
+1. Write an SQL query to calculate the total payments made by a specific student. You will need to
+join the "Payments" table with the "Students" table based on the student's ID.
+
+select s.student_ID,sum(p.amount),s.first_name from payments p inner join students s
+    -> on s.student_id = p.student_id group by s.student_Id,s.first_name;
++------------+---------------+------------+
+| student_ID | sum(p.amount) | first_name |
++------------+---------------+------------+
+|        102 |       1200.00 | Jane       |
+|        103 |       1100.00 | Alice      |
+|        104 |       1000.00 | Bob        |
+|        105 |       1150.00 | Mary       |
+|        106 |       1000.00 | Michael    |
+|        107 |       1300.00 | Elizabeth  |
+|        108 |        900.00 | David      |
+|        109 |       1050.00 | Emma       |
+|        110 |       1250.00 | James      |
++------------+---------------+------------+
+9 rows in set (0.00 sec)
+
+2.Write an SQL query to retrieve a list of courses along with the count of students enrolled in each
+course. Use a JOIN operation between the "Courses" table and the "Enrollments" table.
+
+select count(e.student_id),c.course_name,c.courseid from courses c left join enrollments e on
+    -> e.courseID = c.courseID group by courseID;
++---------------------+--------------------+----------+
+| count(e.student_id) | course_name        | courseid |
++---------------------+--------------------+----------+
+|                   0 | Mathematics        |      201 |
+|                   1 | English Literature |      202 |
+|                   1 | Physics            |      203 |
+|                   1 | Chemistry          |      204 |
+|                   1 | Biology            |      205 |
+|                   0 | History            |      206 |
+|                   1 | Art                |      207 |
+|                   1 | Computer Science   |      208 |
+|                   1 | Economics          |      209 |
+|                   1 | Psychology         |      210 |
++---------------------+--------------------+----------+
+10 rows in set (0.00 sec)
+
+3.Write an SQL query to find the names of students who have not enrolled in any course. Use a
+LEFT JOIN between the "Students" table and the "Enrollments" table to identify students
+without enrollments
+
+select s.student_ID,s.first_name,e.courseID from students s left join enrollments e on
+    -> s.student_ID = e.student_ID where e.student_id is null;
++------------+------------+----------+
+| student_ID | first_name | courseID |
++------------+------------+----------+
+|        106 | Michael    |     NULL |
+|        111 | John       |     NULL |
++------------+------------+----------+
+2 rows in set (0.00 sec)
+
+4.Write an SQL query to retrieve the first name, last name of students, and the names of the
+courses they are enrolled in. Use JOIN operations between the "Students" table and the
+"Enrollments" and "Courses" tables.
+
+select s.first_name,s.last_name,c.course_name,s.student_ID  from students s inner join enrollments e on
+    -> s.student_ID = e.student_ID inner join courses  c on e.courseID = c.courseID;
++------------+-----------+--------------------+------------+
+| first_name | last_name | course_name        | student_ID |
++------------+-----------+--------------------+------------+
+| Jane       | Smith     | English Literature |        102 |
+| Alice      | Johnson   | Physics            |        103 |
+| Bob        | Brown     | Chemistry          |        104 |
+| Mary       | Davis     | Biology            |        105 |
+| Elizabeth  | Wilson    | Art                |        107 |
+| David      | Moore     | Computer Science   |        108 |
+| Emma       | Taylor    | Economics          |        109 |
+| James      | Anderson  | Psychology         |        110 |
++------------+-----------+--------------------+------------+
+8 rows in set (0.00 sec)
+
+5.Create a query to list the names of teachers and the courses they are assigned to. Join the
+"Teacher" table with the "Courses" table.
+
+select c.course_name,t.first_name from teacher t inner join courses c on
+    -> c.teacher_ID = t.teacher_ID;
++--------------------+------------+
+| course_name        | first_name |
++--------------------+------------+
+| Mathematics        | Sarah      |
+| English Literature | Bruce      |
+| Physics            | Diana      |
+| Chemistry          | Clark      |
+| Biology            | Peter      |
+| History            | Sarah      |
+| Art                | Bruce      |
+| Computer Science   | Diana      |
+| Economics          | Peter      |
+| Psychology         | Peter      |
++--------------------+------------+
+10 rows in set (0.00 sec)
+
+
+6. Retrieve a list of students and their enrollment dates for a specific course. You'll need to join the
+"Students" table with the "Enrollments" and "Courses" tables.
+
+select s.student_ID,s.first_name,c.course_name,c.courseID,e.enrollment_date from students s
+    ->  inner join enrollments e on e.student_id = s.student_id
+    ->    inner join courses c on e.courseID = c.courseID where course_name = "Art";
++------------+------------+-------------+----------+-----------------+
+| student_ID | first_name | course_name | courseID | enrollment_date |
++------------+------------+-------------+----------+-----------------+
+|        107 | Elizabeth  | Art         |      207 | 2023-01-26      |
++------------+------------+-------------+----------+-----------------+
+1 row in set (0.00 sec)
+
+7. Find the names of students who have not made any payments. Use a LEFT JOIN between the
+"Students" table and the "Payments" table and filter for students with NULL payment records.
+
+select s.first_name,p.amount from payments p left join students s on s.student_id = p.student_id where p.amount is null;
+
+
+8. Write a query to identify courses that have no enrollments. You'll need to use a LEFT JOIN
+between the "Courses" table and the "Enrollments" table and filter for courses with NULL
+enrollment records.
+
+select c.course_name,c.courseID,e.student_ID from courses c left join enrollments e
+    ->  on c.courseID = e.courseID where e.courseid is null;
++-------------+----------+------------+
+| course_name | courseID | student_ID |
++-------------+----------+------------+
+| Mathematics |      201 |       NULL |
+| History     |      206 |       NULL |
++-------------+----------+------------+
+2 rows in set (0.00 sec)
+
+
+9. Identify students who are enrolled in more than one course. Use a self-join on the "Enrollments"
+table to find students with multiple enrollment records.
+
+select count(s1.student_id),s1.student_ID,s1.courseID from enrollments as s1 join enrollments as s2 on s1.student_id = s2.student_id group by s1.courseID,s1.student_ID;
++----------------------+------------+----------+
+| count(s1.student_id) | student_ID | courseID |
++----------------------+------------+----------+
+|                    1 |        102 |      202 |
+|                    1 |        103 |      203 |
+|                    1 |        104 |      204 |
+|                    1 |        105 |      205 |
+|                    1 |        107 |      207 |
+|                    1 |        108 |      208 |
+|                    1 |        109 |      209 |
+|                    1 |        110 |      210 |
++----------------------+------------+----------+
+8 rows in set (0.00 sec)
+
+10. Find teachers who are not assigned to any courses. Use a LEFT JOIN between the "Teacher"
+table and the "Courses" table and filter for teachers with NULL course assignments.
+
+select t.teacher_id,t.first_name,c.courseid,c.course_name from teacher t left join courses c on
+    ->  t.teacher_id = c.teacher_id where courseid is null;
++------------+------------+----------+-------------+
+| teacher_id | first_name | courseid | course_name |
++------------+------------+----------+-------------+
+|        406 | Steve      |     NULL | NULL        |
+|        407 | Tony       |     NULL | NULL        |
+|        408 | Natasha    |     NULL | NULL        |
+|        409 | Nick       |     NULL | NULL        |
+|        410 | Thor       |     NULL | NULL        |
++------------+------------+----------+-------------+
+5 rows in set (0.00 sec)
+
+
+Task 4:
+
+1.Write an SQL query to calculate the average number of students enrolled in each course. Use 
+aggregate functions and subqueries to achieve this.
+select avg(student_count) as avg_enroll from(select count(student_id) as student_count from enrollments
+    -> group by courseID) as coursegroup;
++------------+
+| avg_enroll |
++------------+
+|     1.1250 |
++------------+
+
+2.Identify the student(s) who made the highest payment. Use a subquery to find the maximum 
+payment amount and then retrieve the student(s) associated with that amount.
+
+select student_ID,amount from payments where amount = (select max(amount) from payments);
++------------+---------+
+| student_ID | amount  |
++------------+---------+
+|        107 | 1300.00 |
++------------+---------+
+
+3.Retrieve a list of courses with the highest number of enrollments. Use subqueries to find the 
+course(s) with the maximum enrollment count
+
+mysql> SELECT c.courseid, c.course_name, COUNT(e.student_id) AS NumberOfEnrollments
+    -> FROM Courses c
+    -> JOIN Enrollments e ON c.courseid = e.courseid
+    -> GROUP BY c.courseid, c.course_name
+    -> HAVING COUNT(e.student_id) = (
+    ->     SELECT MAX(TotalEnrollments) FROM (
+    ->         SELECT COUNT(student_id) AS TotalEnrollments
+    ->         FROM Enrollments
+    ->         GROUP BY courseid
+    ->     ) AS EnrollmentCounts
+    -> );
++----------+--------------------+---------------------+
+| courseid | course_name        | NumberOfEnrollments |
++----------+--------------------+---------------------+
+|      202 | English Literature |                   2 |
++----------+--------------------+---------------------+
+1 row in set (0.01 sec)
+
+4.Calculate the total payments made to courses taught by each teacher. Use subqueries to sum
+payments for each teacher's courses.
+
+SELECT
+    ->     t.teacher_id,
+    ->     t.first_name,
+    ->     t.last_name,
+    ->     COALESCE(SUM(p.amount), 0) AS TotalPayments
+    -> FROM
+    ->     Teacher t
+    -> JOIN
+    ->     Courses c ON t.teacher_id = c.teacher_id
+    -> JOIN
+    ->     Enrollments e ON c.courseid = e.courseid
+    -> LEFT JOIN
+    ->     Payments p ON e.student_id = p.student_id
+    -> GROUP BY
+    ->     t.teacher_id, t.first_name, t.last_name;
++------------+------------+-----------+---------------+
+| teacher_id | first_name | last_name | TotalPayments |
++------------+------------+-----------+---------------+
+|        402 | Bruce      | Wayne     |       2500.00 |
+|        403 | Diana      | Prince    |       2000.00 |
+|        404 | Clark      | Kent      |       1000.00 |
+|        405 | Peter      | Parker    |       3450.00 |
++------------+------------+-----------+---------------+
+4 rows in set (0.00 sec)
+
+5.Identify students who are enrolled in all available courses. Use subqueries to compare a
+student's enrollments with the total number of courses.
+
+SELECT s.student_id, s.first_name, s.last_name
+    -> FROM Students s
+    -> JOIN Enrollments e ON s.student_id = e.student_id
+    -> GROUP BY s.student_id, s.first_name, s.last_name
+    -> HAVING COUNT(DISTINCT e.courseid) = (SELECT COUNT(*) FROM Courses);
+
+6.Retrieve the names of teachers who have not been assigned to any courses. Use subqueries to
+find teachers with no course assignments.
+
+SELECT t.teacher_id, t.first_name, t.last_name
+    -> FROM Teacher t
+    -> WHERE NOT EXISTS (
+    ->     SELECT 1 FROM Courses c WHERE c.teacher_id = t.teacher_id
+    -> );
++------------+------------+-----------+
+| teacher_id | first_name | last_name |
++------------+------------+-----------+
+|        406 | Steve      | Rogers    |
+|        407 | Tony       | Stark     |
+|        408 | Natasha    | Romanoff  |
+|        409 | Nick       | Fury      |
+|        410 | Thor       | Odinson   |
++------------+------------+-----------+
+5 rows in set (0.36 sec)
+
+7.Calculate the average age of all students. Use subqueries to calculate the age of each student
+based on their date of birth.
+
+
+8.Identify courses with no enrollments. Use subqueries to find courses without enrollment
+records.
+
+SELECT c.courseid, c.course_name
+    -> FROM Courses c
+    -> WHERE NOT EXISTS (
+    ->     SELECT 1 FROM Enrollments e WHERE e.courseid = c.courseid
+    -> );
++----------+-------------+
+| courseid | course_name |
++----------+-------------+
+|      201 | Mathematics |
+|      206 | History     |
++----------+-------------+
+2 rows in set (0.00 sec)
+
+9.Calculate the total payments made by each student for each course they are enrolled in. Use
+subqueries and aggregate functions to sum payments.
+
+SELECT e.student_id, e.courseid, SUM(p.amount) AS TotalPayments
+    -> FROM Enrollments e
+    -> JOIN Payments p ON e.student_id = p.student_id
+    -> GROUP BY e.student_id, e.courseid;
++------------+----------+---------------+
+| student_id | courseid | TotalPayments |
++------------+----------+---------------+
+|        102 |      202 |       1200.00 |
+|        103 |      203 |       1100.00 |
+|        104 |      204 |       1000.00 |
+|        105 |      205 |       1150.00 |
+|        107 |      207 |       1300.00 |
+|        108 |      208 |        900.00 |
+|        109 |      209 |       1050.00 |
+|        110 |      210 |       1250.00 |
++------------+----------+---------------+
+8 rows in set (0.00 sec)
+
+10.Identify students who have made more than one payment. Use subqueries and aggregate
+functions to count payments per student and filter for those with counts greater than one.
+
+SELECT p.student_id, COUNT(*) AS NumberOfPayments
+    -> FROM Payments p
+    -> GROUP BY p.student_id
+    -> HAVING COUNT(*) > 1;
+
+
+11.Write an SQL query to calculate the total payments made by each student. Join the "Students" 
+table with the "Payments" table and use GROUP BY to calculate the sum of payments for each 
+student
+
+select s.first_name,s.student_ID,sum(p.amount) from students s inner join payments p on s.student_ID = p.student_ID
+    -> group by student_id;
++------------+------------+---------------+
+| first_name | student_ID | sum(p.amount) |
++------------+------------+---------------+
+| Jane          |        102 |       1200.00 |
+| Alice          |        103 |       1100.00 |
+| Bob           |        104 |       1000.00 |
+| Mary         |        105 |       1150.00 |
+| Michael     |        106 |       1000.00 |
+| Elizabeth   |        107 |       1300.00 |
+| David        |        108 |        900.00 |
+| Emma       |        109 |       1050.00 |
+| James       |        110 |       1250.00 |
++------------+------------+---------------+
+9 rows in set (0.00 sec)
+
+12. Retrieve a list of course names along with the count of students enrolled in each course. Use 
+JOIN operations between the "Courses" table and the "Enrollments" table and GROUP BY to 
+count enrollments.
+
+ SELECT c.course_name, COUNT(e.student_ID) AS NumberOfStudents
+    -> FROM courses c
+    -> LEFT JOIN enrollments e ON c.courseID = e.CourseID
+    -> GROUP BY c.courseID, c.course_name;
++--------------------+------------------+
+| course_name        | NumberOfStudents |
++--------------------+------------------+
+| Mathematics        	|                0 |
+| English Literature 	|                2 |
+| Physics            	|                1 |
+| Chemistry          	|                1 |
+| Biology            	|                1 |
+| History            	|                0 |
+| Art                	|                1 |
+| Computer Science 		|                1 |
+| Economics          	|                1 |
+| Psychology         	|                1 |
++--------------------+------------------+
+10 rows in set (0.00 sec)
+
+13. Calculate the average payment amount made by students. Use JOIN operations between the 
+"Students" table and the "Payments" table and GROUP BY to calculate the average
+
+select  s.student_id, s.first_name, avg(p.amount) from payments p inner join students s on
+    ->  p.student_id = s.student_id group by student_id;
++------------+------------+---------------+
+| student_id | first_name | avg(p.amount) |
++------------+------------+---------------+
+|        102 | Jane       |   1200.000000 |
+|        103 | Alice      |   1100.000000 |
+|        104 | Bob        |   1000.000000 |
+|        105 | Mary       |   1150.000000 |
+|        106 | Michael    |   1000.000000 |
+|        107 | Elizabeth  |   1300.000000 |
+|        108 | David      |    900.000000 |
+|        109 | Emma       |   1050.000000 |
+|        110 | James      |   1250.000000 |
++------------+------------+---------------+
+9 rows in set (0.00 sec)
+
+
+
+
+
